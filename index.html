@@ -28,29 +28,12 @@
             cursor: crosshair;
         }
 
-        /* Animations */
-        @keyframes float {
-            0% { transform: translateY(110vh) rotate(0deg); }
-            100% { transform: translateY(-10vh) rotate(360deg); }
-        }
+        /* Standard Animations */
+        @keyframes float { 0% { transform: translateY(110vh) rotate(0deg); } 100% { transform: translateY(-10vh) rotate(360deg); } }
+        @keyframes heartBeat { 0% { transform: scale(1); } 15% { transform: scale(1.1); } 30% { transform: scale(1); } 45% { transform: scale(1.15); } 100% { transform: scale(1); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes heartBeat {
-            0% { transform: scale(1); }
-            15% { transform: scale(1.1); }
-            30% { transform: scale(1); }
-            45% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-
-        .heart-bg {
-            position: absolute;
-            color: var(--deep-red);
-            font-size: 18px;
-            pointer-events: none;
-            z-index: 1;
-            animation: float 6s linear infinite;
-            opacity: 0.5;
-        }
+        .heart-bg { position: absolute; color: var(--deep-red); font-size: 18px; pointer-events: none; z-index: 1; animation: float 6s linear infinite; opacity: 0.5; }
 
         .container {
             background: var(--card-dark);
@@ -62,99 +45,70 @@
             z-index: 10;
             text-align: center;
             border: 1px solid #222;
-            max-height: 90vh;
+            max-height: 95vh;
             overflow-y: auto;
+            position: relative;
         }
 
         .screen { display: none; animation: fadeIn 0.8s ease forwards; }
         .active { display: flex; flex-direction: column; align-items: center; }
 
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        /* The Pull Rope */
+        .rope-container {
+            margin: 20px 0;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+        .rope-line { width: 4px; height: 50px; background: #5d4037; border-radius: 2px; }
+        .rope-knob { 
+            width: 25px; height: 25px; background: var(--accent-gold); 
+            border-radius: 50%; border: 3px solid #5d4037; 
+            margin-top: -5px; box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+        .rope-container:active { transform: translateY(15px); }
 
-        /* Components */
+        /* Letter Box */
         .scroll-container {
             background: var(--parchment);
             border: 6px double #5d4037;
             padding: 20px;
             border-radius: 4px;
-            max-height: 250px;
+            max-height: 280px;
             overflow-y: auto;
             text-align: left;
             color: #2b1d1a;
             font-family: 'Georgia', serif;
             line-height: 1.7;
             margin: 15px 0;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
         }
 
-        .photo-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 15px;
-            width: 100%;
+        /* Photo Gallery */
+        .photo-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; width: 100%; margin-top: 10px; }
+        .photo-grid img { width: 100%; height: 140px; object-fit: cover; border-radius: 12px; border: 2px solid var(--accent-gold); transition: all 0.5s; filter: grayscale(60%); }
+        .photo-grid img:hover { transform: scale(1.15) translateY(-10px); filter: grayscale(0%); z-index: 10; position: relative; }
+
+        .caption-container { margin: 15px 0; min-height: 60px; color: var(--accent-gold); font-style: italic; border: 1px dashed var(--accent-gold); border-radius: 8px; display: flex; align-items: center; justify-content: center; padding: 5px; }
+
+        /* Certificate */
+        .certificate-box { background: var(--parchment); border: 8px double #5d4037; padding: 30px 15px; color: #2b1d1a; font-family: 'Georgia', serif; position: relative; }
+        
+        .camera-btn {
+            position: absolute; top: 10px; right: 10px;
+            font-size: 24px; cursor: pointer; transition: 0.3s;
+        }
+        .camera-btn:hover { transform: scale(1.2); }
+
+        #photoOverlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 100; justify-content: center; align-items: center; flex-direction: column;
         }
 
-        .photo-grid img {
-            width: 100%;
-            height: 140px;
-            object-fit: cover;
-            border-radius: 12px;
-            border: 2px solid var(--accent-gold);
-            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: grayscale(60%);
-            z-index: 1;
-        }
-
-        .photo-grid img:hover {
-            transform: scale(1.15) translateY(-10px);
-            filter: grayscale(0%);
-            box-shadow: 0 10px 20px rgba(197, 160, 89, 0.4);
-            z-index: 10;
-        }
-
-        .caption-container {
-            margin: 15px 0;
-            min-height: 60px;
-            padding: 10px;
-            border: 1px dashed var(--accent-gold);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-style: italic;
-            color: var(--accent-gold);
-        }
-
-        .certificate-box {
-            background: var(--parchment);
-            border: 8px double #5d4037;
-            padding: 30px 15px;
-            color: #2b1d1a;
-            font-family: 'Georgia', serif;
-            box-shadow: 0 0 30px rgba(197, 160, 89, 0.5);
-        }
-
-        button {
-            background: var(--deep-red);
-            color: #fff;
-            border: 1px solid var(--accent-gold);
-            padding: 12px 28px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: 0.3s;
-            margin: 10px;
-        }
-
+        button { background: var(--deep-red); color: #fff; border: 1px solid var(--accent-gold); padding: 12px 28px; border-radius: 4px; cursor: pointer; font-weight: bold; margin: 10px; }
         #yesBtn { animation: heartBeat 1.5s infinite; }
-
-        .midnight-msg {
-            font-size: 0.85rem;
-            color: #777;
-            margin-top: 20px;
-            font-style: italic;
-            line-height: 1.4;
-        }
+        .gif-main { width: 150px; border-radius: 15px; margin-bottom: 15px; border: 2px solid var(--accent-gold); }
     </style>
 </head>
 <body>
@@ -163,11 +117,17 @@
         <source src="song1.mp3" type="audio/mpeg">
     </audio>
 
+    <div id="photoOverlay" onclick="this.style.display='none'">
+        <img src="pic5.jpg" style="max-width: 85%; border: 4px solid white; border-radius: 10px;">
+        <h3 style="color: white; margin-top: 20px; text-align:center; padding: 0 10px;">" aysho mateh photo orma onda hehe "</h3>
+        <p style="color: #ccc;">(Click to close)</p>
+    </div>
+
     <div class="container">
         <div id="screen1" class="screen active">
-            <img src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmZ4eHFyeW54eHFyeW54eHFyeW54eHFyeW54eHFyeW54eHFyeW54ZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9cw/MDJ9Ad8z0kGvE4WPKp/giphy.gif" style="width:120px; border-radius:50%;">
+            <img src="cat.gif" alt="Cute Cat" class="gif-main">
             <h2 style="color: var(--accent-gold);">can i say sorry? Kurupeyy?</h2>
-            <div style="display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; gap: 10px; justify-content: center;">
                 <button id="yesBtn" onclick="nextScreen(2)">YES ❤️</button>
                 <button id="noBtn" onclick="makeYesBigger()">NO 😢</button>
             </div>
@@ -178,8 +138,15 @@
             <div class="scroll-container">
                 <p>kurupey enik ariyathila engane sorry parayanam enn ithrem dooreya ni enne angot varanum ni samadikathila njn possesive ahn vayankare I'm sorry enik ninne athrem ishtayath konda njn ichiri over ahnenki sorry di enik ni iland patila athkondan i love you kurupey mwah njn enna cheyande ith sheri akan ini NJN JELOUS avathila ini avathila ini block akanum parayathila enik hurt avum enn paranjath ni mindna karyam kond alah like orma ondo njn sirriyod paranje avan nink message idum enn paranjapo njn avnod paranju aval (ni) Ninak (sirrik) reply thannal njn avane acha Vilikam enn paranjath orma ondo ? Like i love you well ivane nink ariyavanneya so same alah ik pashe avan oro Karanam ondakikond vannath kando ath enik ariyavanne konda njn angane okke paranje enik ninne nala vishvasam ond ni ottum chance kodkathila pashe ni mindne enik jelous adikum kurupe I'm your bf so normal ahn ni verey anpilatod mindne jelous adiknnath sowwry di i love you so much ni ente jeevana kuripey ni iland enik oru life ilahdi enta Jeevitham mothom njn ninte kudey plan cheyth vechekua njn enta entire life ilu Ninne snehikne athrem arem snehichitila.</p>
             </div>
+            <p style="color: var(--accent-gold); font-size: 0.8rem;">Pull the rope to see our memories...</p>
+            <div class="rope-container" onclick="nextScreen(3)">
+                <div class="rope-line"></div>
+                <div class="rope-knob"></div>
+            </div>
+        </div>
 
-            <h3 style="color: var(--accent-gold); font-size: 1.1rem;">My favorite pictures of my kunj puzhu ✨</h3>
+        <div id="screen3" class="screen">
+            <h3 style="color: var(--accent-gold);">My favorite pictures of my kunj puzhu ✨</h3>
             <div class="photo-grid">
                 <img src="pic1.jpg" onmouseover="updateCaption('I\'m Not Gonna Let Anyone Else\'s Child Have These Beautiful Eyes I Fell For')" onmouseout="clearCaption()">
                 <img src="pic2.jpg" onmouseover="updateCaption('Enta koch enth shundariya kann vekalum arum')" onmouseout="clearCaption()">
@@ -187,89 +154,76 @@
                 <img src="pic4.jpg" onmouseover="updateCaption('aysho Kadch thinan thonunn enna cute ah kuripey nii mwahh')" onmouseout="clearCaption()">
             </div>
             <div class="caption-container"><p id="hover-caption">Hover over images... ✨</p></div>
-            <button onclick="nextScreen(3)">Forgive Me? 💍</button>
-        </div>
-
-        <div id="screen3" class="screen">
-            <h2 style="color: var(--accent-gold);">Wait... 💍</h2>
-            <p style="line-height:1.6;">"kuripey ipm nammal cherutha ennalum ninne iple prebook cheythotee sign click chey nml officaly married avum"</p>
-            <button onclick="signContract()" style="font-size: 1.4rem; padding: 15px 40px;">SIGN ✍️</button>
+            <button onclick="nextScreen(4)">Forgive Me? 💍</button>
         </div>
 
         <div id="screen4" class="screen">
+            <h2 style="color: var(--accent-gold);">Wait... 💍</h2>
+            <p>"kuripey ipm nammal cherutha ennalum ninne iple prebook cheythotee sign click chey nml officaly married avum"</p>
+            <button onclick="signContract()" style="font-size: 1.4rem;">SIGN ✍️</button>
+        </div>
+
+        <div id="screen5" class="screen">
             <div class="certificate-box">
-                <h2 style="margin:0; font-size: 1.5rem;">Certificate of Love</h2>
-                <p style="margin:10px 0;">This certifies that</p>
+                <div class="camera-btn" onclick="document.getElementById('photoOverlay').style.display='flex'">📸</div>
+                <h2 style="margin:0; font-size: 1.4rem;">Certificate of Love</h2>
+                <p>This certifies that</p>
                 <div style="font-size: 1.8rem; font-weight: bold; color: var(--deep-red);">Ameer & Avanthika</div>
                 <p>are officially pre-booked for life.</p>
                 <div id="sigArea" style="font-family: 'Cursive', cursive; font-size: 1.5rem; border-bottom: 2px solid #5d4037; width: 220px; margin: 20px auto; min-height: 40px;"></div>
-                <p style="font-size: 0.7rem; opacity: 0.7;">Valid Forever ❤️</p>
             </div>
-            <h3 style="color: var(--accent-gold); margin-top: 20px;">I LOVE YOU MY WIFE! ❤️</h3>
-            
-            <p class="midnight-msg">
+            <h3 style="color: var(--accent-gold); margin-top: 15px;">I LOVE YOU MY WIFE! ❤️</h3>
+            <p style="font-size: 0.8rem; color: #888; font-style: italic;">
                 "ith ee pathirathri ondaki theerthe enik ni orangne kandapo snkdm vannita sowwry di sathyavayitum njn avde ondayrnenki kal pidich karanj njn paranjene sowry i love you more than anything in this world"
             </p>
         </div>
     </div>
 
     <script>
-        // GROWING BUTTON LOGIC
-        let yesSize = 1;
-        let noSize = 1;
+        let ySize = 1, nSize = 1;
         function makeYesBigger() {
-            yesSize += 0.5;
-            noSize -= 0.2;
-            document.getElementById('yesBtn').style.transform = `scale(${yesSize})`;
-            document.getElementById('noBtn').style.transform = `scale(${noSize})`;
-            if (noSize <= 0.2) document.getElementById('noBtn').style.display = 'none';
+            ySize += 0.5; nSize -= 0.2;
+            document.getElementById('yesBtn').style.transform = `scale(${ySize})`;
+            document.getElementById('noBtn').style.transform = `scale(${nSize})`;
+            if (nSize <= 0.2) document.getElementById('noBtn').style.display = 'none';
         }
 
-        // NAVIGATION
         function nextScreen(num) {
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById('screen' + num).classList.add('active');
-            if(num === 2) {
-                const audio = document.getElementById('bgMusic');
-                audio.play().catch(e => console.log("Audio needs interaction"));
-            }
+            if(num === 2) document.getElementById('bgMusic').play().catch(e => {});
         }
 
-        // CAPTIONS
-        function updateCaption(txt) {
-            const cap = document.getElementById('hover-caption');
-            cap.style.opacity = 0;
-            setTimeout(() => { cap.innerText = txt; cap.style.opacity = 1; }, 200);
+        function updateCaption(t) {
+            const c = document.getElementById('hover-caption');
+            c.style.opacity = 0; setTimeout(() => { c.innerText = t; c.style.opacity = 1; }, 200);
         }
         function clearCaption() { updateCaption("Hover over images... ✨"); }
 
-        // FINAL SIGNING
         function signContract() {
             confetti({ particleCount: 200, spread: 80, origin: { y: 0.6 }, colors: ['#c5a059', '#800f2f', '#ffffff'] });
-            nextScreen(4);
+            nextScreen(5);
             setTimeout(() => { document.getElementById('sigArea').innerText = "Avanthika Ameer"; }, 1000);
         }
 
-        // SPARKLE CURSOR
-        document.addEventListener('mousemove', function(e) {
-            const sparkle = document.createElement('div');
-            sparkle.innerHTML = '✨';
-            sparkle.style.cssText = `position:fixed; left:${e.clientX}px; top:${e.clientY}px; pointer-events:none; font-size:12px; color:var(--accent-gold); z-index:9999;`;
-            document.body.appendChild(sparkle);
-            sparkle.animate([{ opacity: 1 }, { transform: 'translateY(30px)', opacity: 0 }], { duration: 1000 });
-            setTimeout(() => sparkle.remove(), 1000);
+        // Mouse Sparkles
+        document.addEventListener('mousemove', (e) => {
+            const s = document.createElement('div');
+            s.innerHTML = '✨'; s.style.cssText = `position:fixed; left:${e.clientX}px; top:${e.clientY}px; pointer-events:none; font-size:12px; color:var(--accent-gold); z-index:9999;`;
+            document.body.appendChild(s);
+            s.animate([{ opacity: 1 }, { transform: 'translateY(25px)', opacity: 0 }], { duration: 1000 });
+            setTimeout(() => s.remove(), 1000);
         });
 
-        // FLOATING EMOJIS
-        const symbols = ['❤️', '🦋', '✨', '🌸', '🧸', '💍'];
+        const syms = ['❤️', '🦋', '✨', '🌸', '🧸', '💍'];
         setInterval(() => {
-            const heart = document.createElement('div');
-            heart.classList.add('heart-bg');
-            heart.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
-            heart.style.left = Math.random() * 100 + 'vw';
-            heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-            document.body.appendChild(heart);
-            setTimeout(() => heart.remove(), 6000);
+            const h = document.createElement('div');
+            h.classList.add('heart-bg');
+            h.innerHTML = syms[Math.floor(Math.random() * syms.length)];
+            h.style.left = Math.random() * 100 + 'vw';
+            h.style.animationDuration = (Math.random() * 3 + 4) + 's';
+            document.body.appendChild(h);
+            setTimeout(() => h.remove(), 6000);
         }, 450);
     </script>
 </body>
